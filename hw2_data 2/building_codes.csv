@@ -1,0 +1,81 @@
+id,code,name,type
+1,AKW,Arthur K. Watson Hall,1
+2,BASS,Bass Center for Molecular and Structural Biology,1
+3,BASSLB,Bass Library,2
+4,BCMM,Boyer Center for Molecular Medicine,1
+5,BCT,Becton Engineering and Applied Science Center,1
+6,BF,Benjamin Franklin College,3
+7,BK,Berkeley College,3
+8,BM,Charles W. Bingham Hall,3
+9,BML,Brady Memorial Laboratory,1
+10,BR,Branford College,3
+11,BRBL,Beinecke Rare Book and Manuscript Library,0
+12,C,Connecticut Hall,1
+13,CRB,Class of 1954 Chemistry Research Building,1
+14,CSC,Child Study Center,0
+15,D,Durfee Hall,3
+16,DAVIES,Davies Auditorium Becton Center,0
+17,DC,Davenport College,3
+18,DL,Dunham Laboratory,1
+19,DOW,Dow Hall,1
+20,EAL,Electron Accelerator Laboratory,1
+21,EM,Edwin McClellan Hall,1
+22,ES,Ezra Stiles College,3
+23,ESC,Class of 1954 Environmental Science Center,1
+24,EVANS,Edward P. Evans Hall,1
+25,F,Farnam Hall,3
+26,GH,Grace Hopper College,3
+27,GML,Greeley Memorial Laboratory,1
+28,GRN,Holcombe T. Green Jr. Hall,1
+29,HENDRIE,Hendrie Hall,1
+30,HGS,Hall of Graduate Studies,0
+31,JE,Jonathan Edwards College,3
+32,K,Kirtland Hall,1
+33,KBT,Kline Biology Tower,1
+34,KCL,Kline Chemistry Laboratory,1
+35,KGL,Kline Geology Laboratory,1
+36,KRN,Kroon Hall, 1
+37,L,Lawrance Hall,3
+38,LC,Linsly-Chittenden Hall,1
+39,LEPH,Laboratory of Epidemiology and Public Health,1
+40,LFOP,Leitner Family Observatory and Planetarium,1
+41,LGH,Abby and Mitch Leigh Hall,1
+42,LOM,Leet Oliver Memorial Hall,1
+43,LORIA,Jeffrey H. Loria Center,1
+44,LUCE,Henry R. Luce Hall,1
+45,LWR,Lanman-Wright Memorial Hall,3
+46,MC,Morse College,3
+47,MEC,Malone Engineering Center,1
+48,ML,Mason Laboratory,1
+49,MY,Pauli Murray College,3
+50,OML,Osborn Memorial Laboratories,1
+51,PC,Pierson College,3
+52,PH,Phelps Hall,1
+53,PM,Peabody Museum of Natural History,0
+54,PWG,Payne Whitney Gymnasium,4
+55,RDH,Rudolph Hall,1
+56,RKZ,Rosenkranz Hall,1
+57,SB,Sage Hall,1
+58,SCL,Sterling Chemistry Laboratory,1
+59,SDQ,Sterling Divinity Quadrangle,1
+60,SHM,Sterling Hall of Medicine,1
+61,SLB,Sterling Law Building,1
+62,SM,Silliman College,3
+63,SMH,Sprague Memorial Hall,1
+64,SML,Sterling Memorial Library,2
+65,SPL,Sloane Physics Laboratory,1
+66,SSS,Sheffield-Sterling-Strathcona Hall,1
+67,STOECK,Stoeckel Hall,1
+68,SY,Saybrook College,3
+69,TAC,The Anlyan Center,1
+70,TC,Trumbull College,3
+71,TD,Timothy Dwight College,3
+72,UT,University Theatre,0
+73,V,Vanderbilt Hall,3
+74,W,Welch Hall,3
+75,WL,Wright Laboratory,1
+76,WL-W,Wright Laboratory West,1
+77,WLH,William L. Harkness Hall,1
+78,WTS,Watson Center,1
+79,YHC,Yale Health Center,4
+80,YLL,Yale Law Library,2
