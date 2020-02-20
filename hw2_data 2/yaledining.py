@@ -1,6 +1,10 @@
-# this is the data preprocessing file for Part A (Yale Dining)
+# Part A
 
 import csv
+import graphviz
+from sklearn import tree
+
+#data preprocessing section
 
 # parse building_codes.csv to find Branford and Silliman's building codes
 with open('building_codes.csv') as csvfile1:
@@ -23,6 +27,30 @@ with open('door_data.csv') as csvfile2:
             totalSwipesBR = totalSwipesBR + 1
         if building == SMCode:
             totalSwipesSM = totalSwipesSM + 1
-    MeanTrafficBR = totalSwipesBR / 28
-    MeanTrafficSM = totalSwipesSM / 28
 
+meanTrafficBR = totalSwipesBR / 28 # 28 days total
+meanTrafficSM = totalSwipesSM / 28
+
+# constants for mean traffic comparisons
+LOWTRAFFICBR = 0.95 * meanTrafficBR
+HIGHTRAFFICBR = 1.05 * meanTrafficBR
+LOWTRAFFICSM = 0.95 * meanTrafficSM
+HIGHTRAFFICSM = 1.05 * meanTrafficSM
+
+# 
+
+# train decision tree
+
+# prediction for Branford with given data
+# 78 swipes by 11:45am, 131 swipes by 12:00pm, 232 swipes by 12:15pm on a Monday
+
+BRSamples = 
+BRLabels = 
+
+clf = tree.DecisionTreeClassifier()
+
+clf_train = clf.fit()
+
+
+# prediction for Silliman with given data
+# 90 swipes by 11:45am, 171 swipes by 12:00pm, 230 swipes by 12:15pm on a Sunday
