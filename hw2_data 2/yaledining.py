@@ -92,6 +92,11 @@ def decision_tree(samples, labels, bldg_id, given):
 
     prediction = clf.predict(given)[0]
 
+    #graphviz
+    output_file = str(bldg_id) + ".dot"
+    
+    tree.export_graphviz(clf, out_file=output_file, feature_names=["Day of the Week", "Swipes by 11:45am", "Swipes by 12:00pm", "Swipes by 12:15pm"], class_names=["low-traffic day", "normal day", "high-traffic day"])
+
     return (prediction)
             
 def main():
