@@ -38,8 +38,6 @@ def get_mean_traffic(bldg_id):
     high_traffic_threshold = mean_traffic * 1.05
     return (low_traffic_threshold, high_traffic_threshold)
 
-
-
 def assign_training_labels_samples(bldg_id, low_traffic_threshold, high_traffic_threshold):
     samples = [[0, 0, 0, 0] for x in range(TOTAL_DAYS)] 
     # samples[x][0] = day of the week (0-6, Sunday to Saturday)
@@ -70,17 +68,17 @@ def assign_training_labels_samples(bldg_id, low_traffic_threshold, high_traffic_
 
                 if time_of_day <= TIME1:
                     samples[day][1] += 1 # swipes by 11:45 (incl 11:45)
-                if (time_of_day > TIME1 & time_of_day <= TIME2):
-                    samples[day][2] += 1 # swipes by 12:05 (incl 12:00)
-                if (time_of_day > TIME2 & time_of_day <= TIME3):
+                if time_of_day <= TIME2:
+                    samples[day][2] += 1 # swipes by 12:00 (incl 12:00)
+                if time_of_day <= TIME3:
                     samples[day][3] += 1 # swipes by 12:15 (incl 12:15)
 
-        # assigning labels for the sample data
-        for z in range(TOTAL_DAYS):
-            if total_swipes[z] < low_traffic_threshold:
-                labels[z] = -1
-            if total_swipes[z] > high_traffic_threshold:
-                labels[z] = 1
+    # assigning labels for the sample data
+    for z in range(TOTAL_DAYS):
+        if total_swipes[z] < low_traffic_threshold:
+            labels[z] = -1
+        if total_swipes[z] > high_traffic_threshold:
+            labels[z] = 1
         
     return (samples, labels)
 
@@ -132,10 +130,8 @@ def main():
     if prediction_SM == 1:
         prediction_SM_text = "a high-traffic day"
 
-
     print ("The prediction for Branford with 78 swipes by 11:45am, 131 swipes by 12:00pm, and 232 swipes by 12:15pm on a Monday is: ", prediction_BR_text)
     print ("The prediction for Silliman with 90 swipes by 11:45am, 171 swipes by 12:00pm, and 230 swipes by 12:15pm on a Sunday is: ", prediction_SM_text)
-
 
 if __name__ == "__main__":
     main()
