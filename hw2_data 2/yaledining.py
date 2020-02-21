@@ -15,7 +15,7 @@ LUNCH_END = 810 # lunch ends at 1:30 every day
 
 # order of data in files
 # building_codes.csv = id, code, name, type
-# door_data.csv = day, day_of_week, student_id, time_of_day, building, is_dining_hall
+# door_data.csv = day, day_of_the_week, student_id, time_of_day, building, is_dining_hall
 
 def get_building_code(bldg_code):
     # parse building_codes.csv to find building ID for a specified building, given building code (abbreviation) - for ex: BR, SM
@@ -35,14 +35,15 @@ def get_mean_traffic(bldg_id):
         for row in readCSV2:
             if row[4] == bldg_id and row[5] == "1":
                 # different lunch hours for weekend and weekday
-                if row[1] == "1" or row[1] == "2" or row[1] == "3" or row[1] == "4" or row[1] == "5":
+                if row[1] in ("1", "2", "3", "4", "5"):
                     if LUNCH_START_WEEKDAY <= int(row[3]) <= LUNCH_END:
                         total_swipes += 1
-                if row[1] == "6" or row[1] == "0":
+                if row[1] in ("6", "0"):
                     if LUNCH_START_WEEKEND <= int(row[3]) <= LUNCH_END:
                         total_swipes += 1 
 
     mean_traffic = total_swipes / TOTAL_DAYS
+    print(mean_traffic)
     low_traffic_threshold = mean_traffic * 0.95
     high_traffic_threshold = mean_traffic * 1.05
     return (low_traffic_threshold, high_traffic_threshold)
@@ -73,7 +74,7 @@ def assign_training_labels_samples(bldg_id, low_traffic_threshold, high_traffic_
                 samples[day][0] = day_of_the_week
 
                 # different lunch hours for weekend and weekday
-                if row[1] == "1" or row[1] == "2" or row[1] == "3" or row[1] == "4" or row[1] == "5":
+                if day_of_the_week in (1, 2, 3, 4, 5):
                     if LUNCH_START_WEEKDAY <= time_of_day <= LUNCH_END:
                         total_swipes[day] += 1
                         if time_of_day <= TIME1:
@@ -82,8 +83,8 @@ def assign_training_labels_samples(bldg_id, low_traffic_threshold, high_traffic_
                             samples[day][2] += 1 # swipes by 12:00 (incl 12:00)
                         if time_of_day <= TIME3:
                             samples[day][3] += 1 # swipes by 12:15 (incl 12:15)
-                if row[1] == 6 or row[1] == 0:
-                    if LUNCH_START_WEEKEND <= row[3] <= LUNCH_END:
+                if day_of_the_week in (6, 0):
+                    if LUNCH_START_WEEKEND <= time_of_day <= LUNCH_END:
                         total_swipes[day] += 1
                         if time_of_day <= TIME1:
                             samples[day][1] += 1 # swipes by 11:45 (incl 11:45)
@@ -92,12 +93,16 @@ def assign_training_labels_samples(bldg_id, low_traffic_threshold, high_traffic_
                         if time_of_day <= TIME3:
                             samples[day][3] += 1 # swipes by 12:15 (incl 12:15)
 
+        print(total_swipes)
+
     # assigning labels for the sample data
     for z in range(TOTAL_DAYS):
         if total_swipes[z] < low_traffic_threshold:
             labels[z] = -1
         if total_swipes[z] > high_traffic_threshold:
             labels[z] = 1
+    
+    print(samples, labels)
         
     return (samples, labels)
 
