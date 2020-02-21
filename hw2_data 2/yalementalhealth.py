@@ -9,6 +9,10 @@ import csv
 
 THREE_AM= 180 # 3am in minutes
 FIVE_AM = 300 # 5am in minutes
+LUNCH_START = 660 # earliest lunch starts for all days/colleges is 11:00am
+DINNER_END = 1200 # latest dinner ends for all days/colleges is 8:00pm
+
+# door_data.csv = day, day_of_the_week, student_id, time_of_day, building, is_dining_hall
 
 def get_students():
     # parse student_list.txt
@@ -19,9 +23,41 @@ def get_students():
             students.append(stripped_line)
     return (students)
 
+def skip_meals(students):
+    # Find all students who skip more than 7 brunch/lunch or dinner meals in a week at least twice.
+    skip_mealers = []
+    student_meals = {}
+    # dictionary with the key being each student ID, and the value being an array with each element representing lunch/brunch + dinner for that week (there are 4 weeks in 28 days)
+    # the last element in the array is the counter
+    for student in students:
+        student_meals[student] = [0, 0, 0, 0, 0]
+    with open('door_data.csv') as csvfile1:
+        readCSV1 = csv.reader(csvfile1, delimiter=',')
+        for row in readCSV1:
+            if row[2] in students:
+                curr_student = row[2]
+                curr_day = int(row[0])
+                if LUNCH_START <= int(row[3]) <= DINNER_END and row[5] == "1":
+                    if 0 <= curr_day <= 6:
+                        student_meals[curr_student][0] += 1
+                    if 7 <= curr_day <= 13:
+                        student_meals[curr_student][1] += 1
+                    if 14 <= curr_day <= 20:
+                        student_meals[curr_student][2] += 1
+                    if 21 <= curr_day <= 27:
+                        student_meals[curr_student][3] += 1
+    
+    # there are 14 brunch/lunch + dinner meals in a week. I am looking for students who have less than 7 meals for two weeks.
+    for student in student_meals:
+        for meals in student_meals[student]:
+            if meals < 7:
+                student_meals[student][4] += 1
+    
+    for student in student_meals:
+        if student_meals[student][4] >= 2:
+            skip_mealers.append(student)
 
-# def skip_meals():
-#     # Find all students who skip more than 7 brunch/lunch or dinner meals in a week at least twice.
+    return (skip_mealers)
 
 
 # def skip_class():
@@ -35,7 +71,9 @@ def get_students():
 
 def main():
     students = get_students()
-    print(students)
+    
+    skip_mealers = skip_meals(students)
+    print(skip_mealers)
 
 if __name__ == "__main__":
     main()
