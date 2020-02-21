@@ -12,6 +12,7 @@ FIVE_AM = 300 # 5am in minutes
 LUNCH_START = 660 # earliest lunch starts for all days/colleges is 11:00am
 DINNER_END = 1200 # latest dinner ends for all days/colleges is 8:00pm
 
+# building_codes.csv = id, code, name, type
 # door_data.csv = day, day_of_the_week, student_id, time_of_day, building, is_dining_hall
 
 def get_students():
@@ -25,7 +26,7 @@ def get_students():
 
 def skip_meals(students):
     # Find all students who skip more than 7 brunch/lunch or dinner meals in a week at least twice.
-    skip_mealers = []
+    meal_skippers = []
     student_meals = {}
     # dictionary with the key being each student ID, and the value being an array with each element representing lunch/brunch + dinner for that week (there are 4 weeks in 28 days)
     # the last element in the array is the counter
@@ -55,16 +56,53 @@ def skip_meals(students):
     
     for student in student_meals:
         if student_meals[student][4] >= 2:
-            skip_mealers.append(student)
+            meal_skippers.append(student)
 
-    return (skip_mealers)
+    return (meal_skippers)
 
 
-# def skip_class():
-#     # Find all students who skip all classes and academic activities for a week.
+def skip_class(students):
+    # Find all students who skip all classes and academic activities for a week.
+    # building codes: 1 = academic, 2 = library
+    school_bldgs = []
+    student_presence = {}
+    school_skippers = []
 
-# def late_night():
-#     # Find all students who swipe back into a residential college between 3:00am and 5:00am on at least 3 non-weekend nights (not Friday or Saturday night).
+    for student in students:
+        student_presence[student] = [0, 0, 0, 0]
+
+    # parse building codes to find a list of academic buildings and libraries
+    with open('building_codes.csv') as csvfile2:
+        readCSV2 = csv.reader(csvfile2, delimiter=',')
+        for row in readCSV2:
+            if row[3] in ("1", "2"):
+                school_bldgs.append(row[0])
+    
+    with open('door_data.csv') as csvfile3:
+        readCSV3 = csv.reader(csvfile3, delimiter=',')
+        for row in readCSV3:
+            if row[2] in students:
+                curr_student = row[2]
+                curr_day = int(row[0])
+                if row[4] in school_bldgs:
+                    if 0 <= curr_day <= 6:
+                        student_presence[curr_student][0] += 1
+                    if 7 <= curr_day <= 13:
+                        student_presence[curr_student][1] += 1
+                    if 14 <= curr_day <= 20:
+                        student_presence[curr_student][2] += 1
+                    if 21 <= curr_day <= 27:
+                        student_presence[curr_student][3] += 1
+    
+    for student in student_presence:
+        for week in student_presence[student]:
+            if week == 0 and student not in school_skippers:
+                school_skippers.append(student)
+    
+    return (school_bldgs)
+
+def late_night():
+    # Find all students who swipe back into a residential college between 3:00am and 5:00am on at least 3 non-weekend nights (not Friday or Saturday night).
 
 # def hermit():
 #     # Find all students who, on at least 3 days, do not leave a residential college or swipe into a dining hall.
@@ -72,8 +110,11 @@ def skip_meals(students):
 def main():
     students = get_students()
     
-    skip_mealers = skip_meals(students)
-    print(skip_mealers)
+    # meal_skippers = skip_meals(students)
+    # print(meal_skippers)
+
+    school_skippers = skip_class(students)
+    print(school_skippers)
 
 if __name__ == "__main__":
     main()

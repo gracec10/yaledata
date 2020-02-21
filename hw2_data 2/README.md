@@ -1,4 +1,11 @@
-1
-2
+1.
+
+First, for all of these problems, I created a helper function that parsed through the list of student IDs and added it to an array for easy access.
+My approach for this problem was to first initialize an empty array that I will fill with the IDs of students who skipped more than 7 brunch/lunch or dinner meals in a week at least twice. Then, I created a dictionary with the key being the ID, and the value being a 5 element array. For the first 4 elements of this array, each element represents the number of total brunch/lunch and dinners this student ate in that week (there are 28 days, so 4 weeks). Then, I looped through the door_data file, looking for each time the relevant student IDs came up. I checked all dining hall swipe-ins during brunch/lunch and dinner hours, and incremented the appropriate array element in the dictionary according to which week it was (calculated by the day numbers). There are 14 total brunch/lunch and dinners in a week, so if a student ate less than 7 meals in a week, then I would increment the 5th element of their corresponding array in the dictionary. Finally, I looped through the dictionary again, and added the keys (student IDs) of students whose 5th element was greater than or equal to 2 (they skipped more than 7 meals in a week at least twice) to the original initialized array.
+
+2.
+
+I took a similar approach here as I did in problem 1, but first I created a list of all the school buildings that were type 1 or 2 (academic or library), counting swiping into those building as attending a class or academic activity. Then again, I created a dictionary with the same principles as in problem 1, except I did not include the 5th element for counting, as it is unnecessary here. I looped through door_data.csv, looking for the relevant students, and incrementing the appropriate array element if they had attended a class or academic activity for each week. Then, I looped through this array within the dictionary, and if any of the elements were zero, I added that key (student ID) to the initialized list of students who skipped all classes and academic activities for a week.
+
 3
 4
