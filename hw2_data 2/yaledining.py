@@ -83,29 +83,54 @@ def assign_training_labels_samples(bldg_id, low_traffic_threshold, high_traffic_
                 labels[z] = 1
         
     return (samples, labels)
+
+def decision_tree(samples, labels, bldg_id, given):
+    # decision tree classifier for "given" (in an array in the form of samples: [0, 0, 0, 0])
+    
+    clf = tree.DecisionTreeClassifier()
+    clf.fit(samples, labels)
+
+    prediction = clf.predict(given)[0]
+
+    return (prediction)
             
 def main():
 
-    bldg_id = get_building_code("SM")
-    low_traffic_threshold, high_traffic_threshold = get_mean_traffic(bldg_id)
+    bldg_id_BR = get_building_code("BR")
+    bldg_id_SM = get_building_code("SM")
+    low_traffic_threshold_BR, high_traffic_threshold_BR = get_mean_traffic(bldg_id_BR)
+    low_traffic_threshold_SM, high_traffic_threshold_SM = get_mean_traffic(bldg_id_SM)
 
-    samples, labels = assign_training_labels_samples(bldg_id, low_traffic_threshold, high_traffic_threshold)
+    samples_BR, labels_BR = assign_training_labels_samples(bldg_id_BR, low_traffic_threshold_BR, high_traffic_threshold_BR)
+    samples_SM, labels_SM = assign_training_labels_samples(bldg_id_SM, low_traffic_threshold_SM, high_traffic_threshold_SM)
 
-    print(samples, labels)
+    # predict for Branford: 78 swipes by 11:45am, 131 swipes by 12:00pm, 232 swipes by 12:15pm on a Monday
+    given_BR = [[1, 78, 131, 232]]
 
-# prediction for Branford with given data
-# 78 swipes by 11:45am, 131 swipes by 12:00pm, 232 swipes by 12:15pm on a Monday
+    # predict for Silliman: 90 swipes by 11:45am, 171 swipes by 12:00pm, 230 swipes by 12:15pm on a Sunday
+    given_SM = [[0, 90, 171, 230]]
 
-# BRSamples = 
-# BRLabels = 
+    prediction_BR = decision_tree(samples_BR, labels_BR, bldg_id_BR, given_BR)
+    prediction_SM = decision_tree(samples_SM, labels_SM, bldg_id_SM, given_SM)
 
-# clf = tree.DecisionTreeClassifier()
+    if prediction_BR == -1:
+        prediction_BR_text = "a low-traffic day."
+    if prediction_BR == 0:
+        prediction_BR_text = "a normal day."
+    if prediction_BR == 1:
+        prediction_BR_text = "a high-traffic day"
 
-# clf_train = clf.fit()
+    if prediction_SM == -1:
+        prediction_SM_text = "a low-traffic day."
+    if prediction_SM == 0:
+        prediction_SM_text = "a normal day."
+    if prediction_SM == 1:
+        prediction_SM_text = "a high-traffic day"
 
 
-# prediction for Silliman with given data
-# 90 swipes by 11:45am, 171 swipes by 12:00pm, 230 swipes by 12:15pm on a Sunday
+    print ("The prediction for Branford with 78 swipes by 11:45am, 131 swipes by 12:00pm, and 232 swipes by 12:15pm on a Monday is: ", prediction_BR_text)
+    print ("The prediction for Silliman with 90 swipes by 11:45am, 171 swipes by 12:00pm, and 230 swipes by 12:15pm on a Sunday is: ", prediction_SM_text)
+
 
 if __name__ == "__main__":
     main()
