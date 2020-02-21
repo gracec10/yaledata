@@ -9,6 +9,9 @@ TOTAL_DAYS = 28
 TIME1 = 705 # 11:45 in minutes
 TIME2 = 720 # 12:00 in minutes
 TIME3 = 735 # 12:15 in minutes
+LUNCH_START_WEEKDAY = 690 # lunch starts at 11:30am on weekdays
+LUNCH_START_WEEKEND = 660 # lunch starts at 11:00am on weekends
+LUNCH_END = 810 # lunch ends at 1:30 every day
 
 # order of data in files
 # building_codes.csv = id, code, name, type
@@ -31,7 +34,13 @@ def get_mean_traffic(bldg_id):
         readCSV2 = csv.reader(csvfile2, delimiter=',')
         for row in readCSV2:
             if row[4] == bldg_id and row[5] == "1":
-              total_swipes += 1
+                # different lunch hours for weekend and weekday
+                if row[1] == "1" or row[1] == "2" or row[1] == "3" or row[1] == "4" or row[1] == "5":
+                    if LUNCH_START_WEEKDAY <= int(row[3]) <= LUNCH_END:
+                        total_swipes += 1
+                if row[1] == "6" or row[1] == "0":
+                    if LUNCH_START_WEEKEND <= int(row[3]) <= LUNCH_END:
+                        total_swipes += 1 
 
     mean_traffic = total_swipes / TOTAL_DAYS
     low_traffic_threshold = mean_traffic * 0.95
@@ -60,18 +69,28 @@ def assign_training_labels_samples(bldg_id, low_traffic_threshold, high_traffic_
                 day_of_the_week = int(row[1])
                 time_of_day = int(row[3])
 
-                # increment total swipes for the day
-                total_swipes[day] += 1
-
-                # assigning sample data
+                #assigning sample data and incrementing total swipes for label use later
                 samples[day][0] = day_of_the_week
 
-                if time_of_day <= TIME1:
-                    samples[day][1] += 1 # swipes by 11:45 (incl 11:45)
-                if time_of_day <= TIME2:
-                    samples[day][2] += 1 # swipes by 12:00 (incl 12:00)
-                if time_of_day <= TIME3:
-                    samples[day][3] += 1 # swipes by 12:15 (incl 12:15)
+                # different lunch hours for weekend and weekday
+                if row[1] == "1" or row[1] == "2" or row[1] == "3" or row[1] == "4" or row[1] == "5":
+                    if LUNCH_START_WEEKDAY <= time_of_day <= LUNCH_END:
+                        total_swipes[day] += 1
+                        if time_of_day <= TIME1:
+                            samples[day][1] += 1 # swipes by 11:45 (incl 11:45)
+                        if time_of_day <= TIME2:
+                            samples[day][2] += 1 # swipes by 12:00 (incl 12:00)
+                        if time_of_day <= TIME3:
+                            samples[day][3] += 1 # swipes by 12:15 (incl 12:15)
+                if row[1] == 6 or row[1] == 0:
+                    if LUNCH_START_WEEKEND <= row[3] <= LUNCH_END:
+                        total_swipes[day] += 1
+                        if time_of_day <= TIME1:
+                            samples[day][1] += 1 # swipes by 11:45 (incl 11:45)
+                        if time_of_day <= TIME2:
+                            samples[day][2] += 1 # swipes by 12:00 (incl 12:00)
+                        if time_of_day <= TIME3:
+                            samples[day][3] += 1 # swipes by 12:15 (incl 12:15)
 
     # assigning labels for the sample data
     for z in range(TOTAL_DAYS):
@@ -90,7 +109,7 @@ def decision_tree(samples, labels, bldg_id, given):
 
     prediction = clf.predict(given)[0]
 
-    #graphviz
+    #graphviz https://scikit-learn.org/stable/modules/generated/sklearn.tree.export_graphviz.html
     output_file = str(bldg_id) + ".dot"
     
     tree.export_graphviz(clf, out_file=output_file, feature_names=["Day of the Week", "Swipes by 11:45am", "Swipes by 12:00pm", "Swipes by 12:15pm"], class_names=["low-traffic day", "normal day", "high-traffic day"])
