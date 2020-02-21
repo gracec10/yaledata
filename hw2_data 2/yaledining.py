@@ -1,4 +1,9 @@
+# Grace Cheung
+# gvc8
+# CPSC 310
+# HW 2
 # Part A
+# 2/21/2020
 
 import csv
 import graphviz
