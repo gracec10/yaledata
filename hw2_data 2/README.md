@@ -13,3 +13,6 @@ I am continuing taking the same approach. I solved this question almost exactly 
 
 4.
 
+I repeated the same approach as number 1. and 2., including using the last element of the array in the dictionary as a counter. However, instead of having 5 array elements, where 4 of them represented weeks, I used 29 array elements, where 28 of them represented each day. Then, I basically just looped through door_data.csv, and if there was any swipe activity, I would increment the corresponding array element number. So, for example, if there was swipe activity for a certain student on day 15, the 15th element of the corresponding array would be incremented by 1. I interpreted the question this way, meaning that if there was any swipe activity at all during a calendar day (from minute 0 to minute 1439), then it would fulfill the specs of no dining hall swiping or appearing to leave a residential college. 
+
+Overall, I recognize that these methods are not the fastest, but I hoped that using a dictionary would at least rectify that a little, as I could not optimize fully.

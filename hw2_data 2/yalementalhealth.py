@@ -130,22 +130,64 @@ def late_night(students):
     
     return(late_nighters)
 
+def hermit(students):
+    # Find all students who, on at least 3 days, do not leave a residential college or swipe into a dining hall.
+    hermits = []
+    student_hermit = {}
 
+    for student in students:
+        student_hermit[student] = [0 for x in range(29)]
 
-# def hermit():
-#     # Find all students who, on at least 3 days, do not leave a residential college or swipe into a dining hall.
+    with open('door_data.csv') as csvfile6:
+        readCSV6 = csv.reader(csvfile6, delimiter=',')
+        for row in readCSV6:
+            if row[2] in students:
+                curr_day = int(row[0])
+                curr_student = row[2]
+                student_hermit[curr_student][curr_day] += 1
+    
+    for student in student_hermit:
+        for day in student_hermit[student]:
+            if day == 0:
+                student_hermit[student][28] += 1
+    
+    for student in student_hermit:
+        if student_hermit[student][28] >= 3:
+            hermits.append(student)
+    
+    return(hermits)
+
+def send_email(meal_skippers, school_skippers, late_nighters, hermits):
+    # combine list of students
+    students_contact = []
+    for x in meal_skippers:
+        students_contact.append(x)
+    for x in school_skippers:
+        if x is not in students_contact:
+            students_contact.append(x)
+    for x in late_nighters:
+        if x is not in students_contact:
+            students_contact.append(x)
+    for x in hermits:
+        if x is not in students_contact:
+            students_contact.append(x)
+
+    # send automated email
+        with open('ug_database.csv') as csvfile7:
+            readCSV7 = csv.reader(csvfile7, delimiter=',')
+            for row in readCSV7:
+                
+
 
 def main():
     students = get_students()
     
-    # meal_skippers = skip_meals(students)
-    # print(meal_skippers)
-
-    # school_skippers = skip_class(students)
-    # print(school_skippers)
-
+    meal_skippers = skip_meals(students)
+    school_skippers = skip_class(students)
     late_nighters = late_night(students)
-    print(late_nighters)
+    hermits = hermit(students)
+
+
 
 if __name__ == "__main__":
     main()
