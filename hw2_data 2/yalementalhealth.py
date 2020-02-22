@@ -159,24 +159,31 @@ def hermit(students):
 
 def send_email(meal_skippers, school_skippers, late_nighters, hermits):
     # combine list of students
-    students_contact = []
+    students_contact = {}
+    students_total = []
+
     for x in meal_skippers:
-        students_contact.append(x)
+        students_total.append(x)
     for x in school_skippers:
-        if x is not in students_contact:
-            students_contact.append(x)
+        if x not in students_total:
+            students_total.append(x)
     for x in late_nighters:
-        if x is not in students_contact:
-            students_contact.append(x)
+        if x not in students_total:
+            students_total.append(x)    
     for x in hermits:
-        if x is not in students_contact:
-            students_contact.append(x)
+        if x not in students_total:
+            students_total.append(x)
 
     # send automated email
-        with open('ug_database.csv') as csvfile7:
-            readCSV7 = csv.reader(csvfile7, delimiter=',')
-            for row in readCSV7:
-                
+    with open('ug_database.csv') as csvfile7:
+        readCSV7 = csv.reader(csvfile7, delimiter=',')
+        for row in readCSV7:
+            pronouns = row[4]
+            ID = row[0]
+            if ID in students_total:
+                students_contact[ID] = pronouns
+
+    return (students_contact)
 
 
 def main():
@@ -187,7 +194,11 @@ def main():
     late_nighters = late_night(students)
     hermits = hermit(students)
 
+    students_contact = send_email(meal_skippers, school_skippers, late_nighters, hermits)
 
+    for student in students_contact:
+        print("Dear ", student, "\n This is Yale University emailing because we are concerned about your mental health. There are many resources available for you!")
+        print("Dear parent of ", student, " (", students_contact[student], ") ", "\n This is Yale University emailing because we are concerned about your child's mental health. There are many resources available for", students_contact[student], "!")
 
 if __name__ == "__main__":
     main()
