@@ -101,8 +101,36 @@ def skip_class(students):
     
     return (school_bldgs)
 
-def late_night():
+def late_night(students):
     # Find all students who swipe back into a residential college between 3:00am and 5:00am on at least 3 non-weekend nights (not Friday or Saturday night).
+    late_nighters = []
+    student_late = {}
+    res_bldgs =[]
+
+    # parse building codes to find a list of residential colleges (type 3)
+    with open('building_codes.csv') as csvfile4:
+        readCSV4 = csv.reader(csvfile4, delimiter=',')
+        for row in readCSV4:
+            if row[3] == "3":
+                res_bldgs.append(row[0])
+
+    for student in students:
+        student_late[student] = 0
+
+    with open('door_data.csv') as csvfile5:
+        readCSV5 = csv.reader(csvfile5, delimiter=',')
+        for row in readCSV5:
+            if row[2] in students:
+                if row[4] in res_bldgs and THREE_AM <= int(row[3]) <= FIVE_AM and row[1] in ("0", "1", "2", "3", "4"):
+                    student_late[row[2]] += 1
+    
+    for student in student_late:
+        if student_late[student] >= 3:
+            late_nighters.append(student)
+    
+    return(late_nighters)
+
+
 
 # def hermit():
 #     # Find all students who, on at least 3 days, do not leave a residential college or swipe into a dining hall.
@@ -113,8 +141,11 @@ def main():
     # meal_skippers = skip_meals(students)
     # print(meal_skippers)
 
-    school_skippers = skip_class(students)
-    print(school_skippers)
+    # school_skippers = skip_class(students)
+    # print(school_skippers)
+
+    late_nighters = late_night(students)
+    print(late_nighters)
 
 if __name__ == "__main__":
     main()

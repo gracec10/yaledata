@@ -7,5 +7,9 @@ My approach for this problem was to first initialize an empty array that I will 
 
 I took a similar approach here as I did in problem 1, but first I created a list of all the school buildings that were type 1 or 2 (academic or library), counting swiping into those building as attending a class or academic activity. Then again, I created a dictionary with the same principles as in problem 1, except I did not include the 5th element for counting, as it is unnecessary here. I looped through door_data.csv, looking for the relevant students, and incrementing the appropriate array element if they had attended a class or academic activity for each week. Then, I looped through this array within the dictionary, and if any of the elements were zero, I added that key (student ID) to the initialized list of students who skipped all classes and academic activities for a week.
 
-3
-4
+3.
+
+I am continuing taking the same approach. I solved this question almost exactly the same way I solved question 2, swapping out looking for academic buildings for residential buildings (type 3). This time, my dictionary's values were not arrays, because I didn't need to count based on weeks, but just the total over 28 days. So, it was just a single number that I incremented each time a student swiped into a residential college during the specified days and times. 
+
+4.
+
