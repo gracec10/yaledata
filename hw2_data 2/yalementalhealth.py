@@ -198,7 +198,7 @@ def main():
 
     for student in students_contact:
         print("Dear ", student, "\n This is Yale University emailing because we are concerned about your mental health. There are many resources available for you!")
-        print("Dear parent of ", student, " (", students_contact[student], ") ", "\n This is Yale University emailing because we are concerned about your child's mental health. There are many resources available for", students_contact[student], "!")
+        print("Dear parent of ", student, " (", students_contact[student], ") ", "\n This is Yale University emailing because we are concerned about your child's mental health. There are many resources available for", students_contact[student], "!\n")
 
 if __name__ == "__main__":
     main()

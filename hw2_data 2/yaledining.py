@@ -48,7 +48,6 @@ def get_mean_traffic(bldg_id):
                         total_swipes += 1 
 
     mean_traffic = total_swipes / TOTAL_DAYS
-    print(mean_traffic)
     low_traffic_threshold = mean_traffic * 0.95
     high_traffic_threshold = mean_traffic * 1.05
     return (low_traffic_threshold, high_traffic_threshold)
@@ -98,23 +97,19 @@ def assign_training_labels_samples(bldg_id, low_traffic_threshold, high_traffic_
                         if time_of_day <= TIME3:
                             samples[day][3] += 1 # swipes by 12:15 (incl 12:15)
 
-        print(total_swipes)
-
     # assigning labels for the sample data
     for z in range(TOTAL_DAYS):
         if total_swipes[z] < low_traffic_threshold:
             labels[z] = -1
         if total_swipes[z] > high_traffic_threshold:
             labels[z] = 1
-    
-    print(samples, labels)
         
     return (samples, labels)
 
 def decision_tree(samples, labels, bldg_id, given):
     # decision tree classifier for "given" (in an array in the form of samples: [0, 0, 0, 0])
     
-    clf = tree.DecisionTreeClassifier()
+    clf = tree.DecisionTreeClassifier(random_state=65535)
     clf.fit(samples, labels)
 
     prediction = clf.predict(given)[0]
